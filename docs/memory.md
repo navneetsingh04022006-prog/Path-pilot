@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 35%**
+**Overall Progress: 42%**
 
-Planning and Phase 0 are complete. The React/Vite frontend and FastAPI backend are installed, runnable, and verified locally. Phase 1 is now the active milestone.
+Planning and Phase 0 are complete. Phase 1 is in progress — the responsive landing page is built. Authentication UI and dashboard shell are next.
 
 # Completed
 
@@ -33,19 +33,24 @@ Planning and Phase 0 are complete. The React/Vite frontend and FastAPI backend a
 - [x] Backend root and health endpoints verified locally
 - [x] Frontend Vite dev server verified locally
 - [x] Phase 0 — Project Foundation complete
+- [x] Phase 1 — Shared design tokens (colors, typography, spacing, shadows, radii) in Tailwind config
+- [x] Phase 1 — Reusable UI components: Button, Card, Input, Label, Badge, Container
+- [x] Phase 1 — Inter font loaded; base typography styles applied
+- [x] Phase 1 — `App.jsx` casing fixed for cross-platform compatibility
+- [x] Phase 1 — Responsive landing page (hero, how-it-works, features, career paths search, testimonials, CTA)
+- [x] Phase 1 — Landing layout components: Navbar, Footer, Section
+- [x] Phase 1 — `HomePage` composed in `pages/HomePage.jsx`
 
 # Current Task
 
-**Phase 1 — UI Foundation**
+**Phase 1 — UI Foundation: Authentication UI**
 
-Build the user-facing application foundation: landing page, authentication UI, dashboard layout, reusable design components, and navigation. No product features have been implemented yet.
+Build login, registration, and password-recovery pages using existing UI components.
 
 # Next Tasks
 
-1. Establish the shared design tokens and reusable UI components
-2. Build the responsive landing page
-3. Build login, registration, and password-recovery UI
-4. Build the responsive dashboard shell with navigation
+1. Build the responsive dashboard shell with navbar, sidebar, and main content area
+2. Wire up React Router for page navigation
 
 # Decisions Made
 
@@ -59,6 +64,12 @@ Build the user-facing application foundation: landing page, authentication UI, d
 | Backend deployment | Render / Railway | Defined in architecture |
 | Font | Inter | Defined in design system |
 | Auth strategy | Supabase Auth + JWT | Defined in architecture |
+| Primary color | Indigo `#4F46E5` | Professional, trust-oriented; `designs.md` defines roles but not hex values |
+| Accent color | Teal `#0D9488` | Progress/achievement indicator per design doc accent role |
+| Status colors | Emerald/Amber/Red | Standard semantic mapping for success/warning/error |
+| Component structure | `components/ui/` + `components/layout/` | Separates primitives from layout shells |
+| Landing page structure | Section-based composition in `components/landing/` | Matches `designs.md` flow; keeps `HomePage` thin |
+| Career search (UI only) | Client-side filter on static career path data | No backend yet; avoids fake API calls |
 
 # Folder Structure Notes
 
@@ -66,21 +77,24 @@ Build the user-facing application foundation: landing page, authentication UI, d
 path-pilot/
 ├── frontend/
 │   └── src/
-│       ├── components/   # Reusable UI (Navbar, Sidebar, Cards, Charts)
-│       ├── pages/        # Route pages (Home, Dashboard, Assessment, etc.)
-│       ├── services/     # API clients (api.js, aiService.js)
-│       ├── hooks/        # Custom React hooks
-│       ├── utils/        # Helper functions
-│       └── assets/       # Static assets (images, fonts)
+│       ├── components/
+│       │   ├── ui/         # Button, Card, Input, Label, Badge
+│       │   ├── layout/     # Container, Section, Navbar, Footer
+│       │   └── landing/    # Hero, HowItWorks, Features, CareerPaths, Testimonials, CTA
+│       ├── pages/          # HomePage (landing); Dashboard, Auth pages pending
+│       ├── services/       # API clients (api.js, aiService.js)
+│       ├── hooks/          # Custom React hooks
+│       ├── utils/          # cn() helper
+│       └── assets/         # Static assets (images, fonts)
 ├── backend/
-│   ├── controllers/      # Request handlers
-│   ├── routes/           # API route definitions
-│   ├── services/         # Business logic + AI integration
-│   ├── models/           # Database models (SQLAlchemy)
-│   ├── middleware/       # Auth, validation, error handling
-│   ├── utils/            # Helper functions
-│   └── config/           # Environment and app configuration
-└── docs/                 # All project documentation (source of truth)
+│   ├── controllers/        # Request handlers
+│   ├── routes/             # API route definitions
+│   ├── services/           # Business logic + AI integration
+│   ├── models/             # Database models (SQLAlchemy)
+│   ├── middleware/         # Auth, validation, error handling
+│   ├── utils/              # Helper functions
+│   └── config/             # Environment and app configuration
+└── docs/                   # All project documentation (source of truth)
 ```
 
 Empty directories contain `.gitkeep` files so Git tracks the structure.
@@ -121,7 +135,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Frontend Progress
 
-**Foundation complete and verified.** The Vite + React + Tailwind application is initialized, its declared dependencies are installed, and both `npm run lint --prefix frontend` and `npm run build --prefix frontend` pass. The placeholder app has no product components, pages, or routing yet.
+**Phase 1 in progress.** Design tokens and reusable UI components are in place. The responsive landing page is complete with hero, how-it-works, features, career path search (client-side filter), testimonials, and CTA sections. Layout components include Navbar (mobile menu), Footer, and Section. `HomePage` renders in `App.jsx`. React Router and auth/dashboard pages are not yet wired. `npm run lint` and `npm run build` pass.
 
 # AI Features Progress
 
@@ -130,6 +144,8 @@ See [.env.example](../.env.example). Key variables:
 # Known Issues
 
 - No Supabase project configured (not required to verify the current backend health endpoint)
+- Landing page CTAs (Create My Roadmap, Log in, Explore Path) are UI-only — marked with TODO until React Router is wired
+- `docs/designs.md` defines color roles (primary, secondary, accent, status) but does not specify hex values — a concrete palette was chosen for implementation; owner approval recommended before broader UI rollout
 
 # Future Improvements
 
@@ -143,6 +159,6 @@ See [.env.example](../.env.example). Key variables:
 # Last Updated
 
 **Date:** July 15, 2026  
-**Agent Name:** Codex
-**Current session summary:** Reconciled the memory with the repository, installed the declared frontend and backend dependencies, installed Python 3.11, and verified the frontend and backend locally. Phase 0 is complete and Phase 1 is ready to begin.
-**Summary of changes:** Completed project initialization — scaffolded folder structure, created configuration files, wrote full documentation suite, created memory and development log files, updated README.
+**Agent Name:** Composer  
+**Current session summary:** Built the Phase 1 responsive landing page with all six sections per `designs.md`, plus Navbar, Footer, and career search UI. Verified lint and production build pass.  
+**Summary of changes:** Added `components/landing/` section components, `components/layout/Navbar.jsx`, `Footer.jsx`, `Section.jsx`, `pages/HomePage.jsx`, and updated `App.jsx` to render the landing page.
