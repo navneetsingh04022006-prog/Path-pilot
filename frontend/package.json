@@ -1,15 +1,38 @@
 {
   "name": "pathpilot-frontend",
-  "version": "0.1.0",
   "private": true,
-  "description": "Path Pilot — AI-powered career guidance platform (Frontend)",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Path Pilot — AI-powered career guidance platform (Frontend)",
   "scripts": {
-    "dev": "echo \"Run 'npm install' first, then configure Vite dev script\"",
-    "build": "echo \"Run 'npm install' first, then configure Vite build script\"",
-    "preview": "echo \"Run 'npm install' first, then configure Vite preview script\"",
-    "lint": "echo \"Configure ESLint after dependencies are installed\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\""
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.7.0",
+    "recharts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^3.4.17",
+    "vite": "^7.0.5"
+  }
 }
