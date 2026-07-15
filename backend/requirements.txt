@@ -1,0 +1,16 @@
+# Path Pilot Backend Dependencies
+# Install with: pip install -r requirements.txt
+#
+# Preferred stack: FastAPI + Python (per docs/architecture.md and docs/rules.md)
+# Dependencies will be pinned during Phase 0 backend setup.
+
+# fastapi
+# uvicorn[standard]
+# pydantic
+# pydantic-settings
+# sqlalchemy
+# python-jose[cryptography]
+# passlib[bcrypt]
+# python-multipart
+# httpx
+# python-dotenv

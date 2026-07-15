@@ -1,0 +1,15 @@
+{
+  "name": "pathpilot-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Path Pilot — AI-powered career guidance platform (Frontend)",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"Run 'npm install' first, then configure Vite dev script\"",
+    "build": "echo \"Run 'npm install' first, then configure Vite build script\"",
+    "preview": "echo \"Run 'npm install' first, then configure Vite preview script\"",
+    "lint": "echo \"Configure ESLint after dependencies are installed\""
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
