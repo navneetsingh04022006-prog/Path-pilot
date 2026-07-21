@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Container from '../layout/Container';
 import Section from '../layout/Section';
-import { Button } from '../ui';
 
 function CtaSection() {
   return (
@@ -16,14 +16,19 @@ function CtaSection() {
             skills, and timeline.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            {/* TODO: Navigate to /register once React Router is wired */}
-            <Button size="lg" className="w-full sm:w-auto">
+            <Link
+              to="/register"
+              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-button bg-primary px-6 text-subheading text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:w-auto"
+            >
               Create My Roadmap
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </Button>
-            <Button variant="secondary" size="lg" className="w-full sm:w-auto">
+            </Link>
+            <Link
+              to="/login"
+              className="inline-flex h-12 w-full items-center justify-center rounded-button bg-secondary px-6 text-subheading text-secondary-foreground transition-colors hover:bg-secondary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 sm:w-auto"
+            >
               Log in
-            </Button>
+            </Link>
           </div>
         </div>
       </Container>

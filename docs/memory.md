@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 42%**
+**Overall Progress: 60%**
 
-Planning and Phase 0 are complete. Phase 1 is in progress — the responsive landing page is built. Authentication UI and dashboard shell are next.
+Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page with Aceternity ContainerScroll animation is built, React Router is wired, auth pages are built, and the dashboard shell is in place. Phase 2 prep is next.
 
 # Completed
 
@@ -34,23 +34,32 @@ Planning and Phase 0 are complete. Phase 1 is in progress — the responsive lan
 - [x] Frontend Vite dev server verified locally
 - [x] Phase 0 — Project Foundation complete
 - [x] Phase 1 — Shared design tokens (colors, typography, spacing, shadows, radii) in Tailwind config
-- [x] Phase 1 — Reusable UI components: Button, Card, Input, Label, Badge, Container
+- [x] Phase 1 — Reusable UI components: Button, Card, Input, Label, Badge, Container, ContainerScroll
 - [x] Phase 1 — Inter font loaded; base typography styles applied
 - [x] Phase 1 — `App.jsx` casing fixed for cross-platform compatibility
-- [x] Phase 1 — Responsive landing page (hero, how-it-works, features, career paths search, testimonials, CTA)
+- [x] Phase 1 — Responsive landing page (hero with scroll animation, how-it-works, features, career paths search, testimonials, CTA)
 - [x] Phase 1 — Landing layout components: Navbar, Footer, Section
 - [x] Phase 1 — `HomePage` composed in `pages/HomePage.jsx`
+- [x] Phase 1 — React Router (`react-router-dom` v7) wired in `App.jsx` with `BrowserRouter`, `Routes`, `Route`
+- [x] Phase 1 — Auth pages: `LoginPage.jsx`, `RegisterPage.jsx`, `ForgotPasswordPage.jsx`
+- [x] Phase 1 — Dashboard shell: `DashboardLayout.jsx` (responsive fixed sidebar, mobile drawer, top header)
+- [x] Phase 1 — Placeholder dashboard views: `DashboardPage.jsx`, `RoadmapPage.jsx`, `ProfilePage.jsx`
+- [x] Phase 1 — Navbar, Footer, HeroSection, CtaSection updated to use React Router `Link`
+- [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2086 modules, built in 10.01s
 
 # Current Task
 
-**Phase 1 — UI Foundation: Authentication UI**
+**Phase 2 Prep — Backend API & Supabase Auth Integration**
 
-Build login, registration, and password-recovery pages using existing UI components.
+Connect authentication (Supabase Auth + JWT) to the existing auth pages. Implement protected route guard in the frontend. Stand up user profile and roadmap API endpoints in FastAPI.
 
 # Next Tasks
 
-1. Build the responsive dashboard shell with navbar, sidebar, and main content area
-2. Wire up React Router for page navigation
+1. Implement Supabase Auth (sign-up, sign-in, forgot-password) wired to `LoginPage`, `RegisterPage`, `ForgotPasswordPage`
+2. Create `AuthContext` (or Zustand store) to hold session state across the app
+3. Add `ProtectedRoute` component that redirects unauthenticated users to `/login`
+4. Build FastAPI user-profile endpoint (`GET /users/me`, `PATCH /users/me`)
+5. Build FastAPI roadmap endpoint skeleton (`POST /roadmaps/generate`, `GET /roadmaps/:id`)
 
 # Decisions Made
 
@@ -70,6 +79,11 @@ Build login, registration, and password-recovery pages using existing UI compone
 | Component structure | `components/ui/` + `components/layout/` | Separates primitives from layout shells |
 | Landing page structure | Section-based composition in `components/landing/` | Matches `designs.md` flow; keeps `HomePage` thin |
 | Career search (UI only) | Client-side filter on static career path data | No backend yet; avoids fake API calls |
+| Router | React Router v7 (`react-router-dom`) | Already listed in tech stack; was pre-installed |
+| Auth pages style | Centered card on gradient background | Follows `designs.md` trust/simplicity principle |
+| Dashboard sidebar | Fixed 240px desktop, slide-in drawer mobile | Matches `designs.md` layout spec |
+| Auth guard | Deferred to Phase 2 | Backend auth not yet available; placeholder `// TODO` left |
+| Interactive Hero Card | Aceternity ContainerScroll | Modern scroll animation adapted from TSX to JSX using framer-motion |
 
 # Folder Structure Notes
 
@@ -78,10 +92,11 @@ path-pilot/
 ├── frontend/
 │   └── src/
 │       ├── components/
-│       │   ├── ui/         # Button, Card, Input, Label, Badge
-│       │   ├── layout/     # Container, Section, Navbar, Footer
-│       │   └── landing/    # Hero, HowItWorks, Features, CareerPaths, Testimonials, CTA
-│       ├── pages/          # HomePage (landing); Dashboard, Auth pages pending
+│       │   ├── ui/         # Button, Card, Input, Label, Badge, ContainerScroll
+│       │   ├── layout/     # Container, Section, Navbar, Footer, DashboardLayout
+│       │   └── landing/    # HeroSection, HowItWorks, Features, CareerPaths, Testimonials, CTA
+│       ├── pages/          # HomePage, LoginPage, RegisterPage, ForgotPasswordPage
+│       │                   # DashboardPage, RoadmapPage, ProfilePage
 │       ├── services/       # API clients (api.js, aiService.js)
 │       ├── hooks/          # Custom React hooks
 │       ├── utils/          # cn() helper
@@ -103,7 +118,7 @@ Empty directories contain `.gitkeep` files so Git tracks the structure.
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React, Vite, Tailwind CSS, React Router, Framer Motion, Recharts, Lucide React |
+| Frontend | React, Vite, Tailwind CSS, React Router v7, Framer Motion, Recharts, Lucide React |
 | Backend | FastAPI, Python 3.11+, Pydantic, SQLAlchemy, Uvicorn |
 | Database | PostgreSQL (Supabase) |
 | AI | Google Gemini API |
@@ -135,7 +150,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Frontend Progress
 
-**Phase 1 in progress.** Design tokens and reusable UI components are in place. The responsive landing page is complete with hero, how-it-works, features, career path search (client-side filter), testimonials, and CTA sections. Layout components include Navbar (mobile menu), Footer, and Section. `HomePage` renders in `App.jsx`. React Router and auth/dashboard pages are not yet wired. `npm run lint` and `npm run build` pass.
+**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, including an interactive Aceternity `ContainerScroll` hero mockup. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
 
 # AI Features Progress
 
@@ -143,9 +158,9 @@ See [.env.example](../.env.example). Key variables:
 
 # Known Issues
 
-- No Supabase project configured (not required to verify the current backend health endpoint)
-- Landing page CTAs (Create My Roadmap, Log in, Explore Path) are UI-only — marked with TODO until React Router is wired
-- `docs/designs.md` defines color roles (primary, secondary, accent, status) but does not specify hex values — a concrete palette was chosen for implementation; owner approval recommended before broader UI rollout
+- No Supabase project configured (not required until Phase 2)
+- Auth pages submit handlers are stubs (`// TODO: call auth service`) — auth guard deferred to Phase 2
+- Dashboard profile displays hard-coded placeholder data — real user data comes with backend integration
 
 # Future Improvements
 
@@ -158,7 +173,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Last Updated
 
-**Date:** July 15, 2026  
-**Agent Name:** Composer  
-**Current session summary:** Built the Phase 1 responsive landing page with all six sections per `designs.md`, plus Navbar, Footer, and career search UI. Verified lint and production build pass.  
-**Summary of changes:** Added `components/landing/` section components, `components/layout/Navbar.jsx`, `Footer.jsx`, `Section.jsx`, `pages/HomePage.jsx`, and updated `App.jsx` to render the landing page.
+**Date:** July 21, 2026  
+**Agent Name:** Antigravity  
+**Current session summary:** Adapted Aceternity ContainerScroll component to clean React JS (`ContainerScroll.jsx`), integrated it into `HeroSection.jsx` with an Unsplash dashboard preview image, updated `memory.md`, and verified clean `npm run lint` (0 errors) and `npm run build` (2086 modules, 10.01s).  
+**Summary of changes:** Added `components/ui/ContainerScroll.jsx`; updated `components/ui/index.js` and `components/landing/HeroSection.jsx`; updated `docs/memory.md`.

@@ -1,9 +1,12 @@
+import { Link } from 'react-router-dom';
 import Container from '../layout/Container';
 
 const footerLinks = [
   { label: 'How It Works', href: '#how-it-works' },
   { label: 'Features', href: '#features' },
   { label: 'Career Paths', href: '#career-paths' },
+  { label: 'Log in', to: '/login' },
+  { label: 'Sign up', to: '/register' },
 ];
 
 function Footer() {
@@ -12,9 +15,9 @@ function Footer() {
       <Container>
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
           <div className="text-center sm:text-left">
-            <p className="text-lg font-semibold text-slate-900">
+            <Link to="/" className="text-lg font-semibold text-slate-900">
               Path <span className="text-primary">Pilot</span>
-            </p>
+            </Link>
             <p className="mt-1 text-caption text-slate-500">
               Your AI-powered career navigation platform.
             </p>
@@ -23,13 +26,22 @@ function Footer() {
           <nav aria-label="Footer navigation">
             <ul className="flex flex-wrap justify-center gap-6">
               {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-caption font-medium text-slate-600 transition-colors hover:text-primary"
-                  >
-                    {link.label}
-                  </a>
+                <li key={link.label}>
+                  {link.to ? (
+                    <Link
+                      to={link.to}
+                      className="text-caption text-slate-600 transition-colors hover:text-primary"
+                    >
+                      {link.label}
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-caption text-slate-600 transition-colors hover:text-primary"
+                    >
+                      {link.label}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

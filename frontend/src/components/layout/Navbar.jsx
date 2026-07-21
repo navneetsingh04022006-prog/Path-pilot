@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Container from './Container';
-import { Button } from '../ui';
 import { cn } from '../../utils/cn';
 
 const navLinks = [
@@ -11,9 +11,6 @@ const navLinks = [
   { label: 'Testimonials', href: '#testimonials' },
 ];
 
-const ctaClassName =
-  'inline-flex h-8 items-center justify-center rounded-button bg-primary px-3 text-caption font-medium text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2';
-
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,16 +18,16 @@ function Navbar() {
     <header className="sticky top-0 z-50 border-b border-border bg-surface/95 backdrop-blur-sm">
       <Container>
         <div className="flex h-16 items-center justify-between">
-          <a href="/" className="text-lg font-semibold text-slate-900">
+          <Link to="/" className="text-lg font-semibold text-slate-900">
             Path <span className="text-primary">Pilot</span>
-          </a>
+          </Link>
 
           <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-caption font-medium text-slate-600 transition-colors hover:text-primary"
+                className="text-caption text-slate-600 transition-colors hover:text-primary"
               >
                 {link.label}
               </a>
@@ -38,13 +35,18 @@ function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-3 md:flex">
-            {/* TODO: Navigate to /login once React Router is wired */}
-            <Button variant="ghost" size="sm">
+            <Link
+              to="/login"
+              className="inline-flex h-8 items-center justify-center rounded-button px-3 text-caption text-slate-700 transition-colors hover:bg-slate-100"
+            >
               Log in
-            </Button>
-            <a href="#get-started" className={ctaClassName}>
+            </Link>
+            <Link
+              to="/register"
+              className="inline-flex h-8 items-center justify-center rounded-button bg-primary px-3 text-caption text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
               Get Started
-            </a>
+            </Link>
           </div>
 
           <button
@@ -68,20 +70,28 @@ function Navbar() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="block rounded-button px-3 py-2 text-body font-medium text-slate-700 hover:bg-slate-100"
+                    className="block rounded-button px-3 py-2 text-body text-slate-700 hover:bg-slate-100"
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.label}
                   </a>
                 </li>
               ))}
-              <li className="mt-2 flex flex-col gap-2 border-t border-border pt-4">
-                <Button variant="ghost" className="w-full">
+              <li className={cn('mt-2 flex flex-col gap-2 border-t border-border pt-4')}>
+                <Link
+                  to="/login"
+                  className="block rounded-button px-3 py-2 text-center text-body text-slate-700 hover:bg-slate-100"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Log in
-                </Button>
-                <a href="#get-started" className={cn(ctaClassName, 'h-10 w-full px-4')}>
+                </Link>
+                <Link
+                  to="/register"
+                  className="block rounded-button bg-primary px-3 py-2 text-center text-body text-primary-foreground hover:bg-primary-hover"
+                  onClick={() => setMenuOpen(false)}
+                >
                   Get Started
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
