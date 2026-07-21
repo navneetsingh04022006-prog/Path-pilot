@@ -1,17 +1,23 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
 import { Button, Input, Label, Card } from '../components/ui';
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
+  const [authError, setAuthError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
+    if (authError) setAuthError('');
   }
 
   function validate() {
@@ -23,7 +29,7 @@ function LoginPage() {
     return next;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) {
@@ -31,8 +37,15 @@ function LoginPage() {
       return;
     }
     setLoading(true);
-    // TODO: call auth service when backend is ready
-    setTimeout(() => setLoading(false), 1200);
+    setAuthError('');
+    try {
+      await signIn({ email: form.email, password: form.password });
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      setAuthError(err.message ?? 'Sign in failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -49,6 +62,16 @@ function LoginPage() {
         {/* Card */}
         <Card className="p-8 shadow-card dark:shadow-[0_0_30px_rgba(79,70,229,0.1)]">
           <h1 className="mb-6 text-heading text-slate-900 dark:text-slate-100">Sign in</h1>
+
+          {/* Auth-level error */}
+          {authError && (
+            <div
+              role="alert"
+              className="mb-4 rounded-lg border border-error/30 bg-error/10 px-4 py-3 text-caption text-error"
+            >
+              {authError}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col gap-5">

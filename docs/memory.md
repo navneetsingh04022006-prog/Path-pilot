@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 65%**
+**Overall Progress: 75%**
 
-Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page, React Router, Auth pages (Login, Register, Forgot Password), Dashboard shell (Dashboard, Roadmap, Profile), and full Light/Dark mode theme toggle are fully integrated and polished. Phase 2 prep is next.
+Planning, Phase 0, Phase 1, and Phase 2 are complete. Phase 2 (Database Schema, Supabase Auth Integration, and Backend User/Profile APIs) is fully implemented and verified. Phase 3 (Skill Assessment Engine) is next.
 
 # Completed
 
@@ -48,20 +48,31 @@ Planning and Phase 0 are complete. Phase 1 is complete — the responsive landin
 - [x] Phase 1 — Light/Dark Theme Switching refactored: `ThemeContext.jsx` applies `dark` class directly to `document.documentElement`, supports manual toggle & `localStorage` persistence.
 - [x] Phase 1 — Dark mode aesthetics overhauled across all components (`Card`, `Input`, `Label`, `Navbar`, `DashboardLayout`, Auth Pages, and Dashboard Views) with high-contrast slate colors and subtle glassmorphism.
 - [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2087 modules, built in 13.44s
+- [x] Phase 2 — Configured SQLAlchemy database engine and session dependency in `backend/config/database.py`
+- [x] Phase 2 — Created SQLAlchemy ORM models (`User`, `Profile`) in `backend/models/`
+- [x] Phase 2 — Created Pydantic request/response validation schemas in `backend/schemas/` (`auth.py`, `user.py`, `profile.py`)
+- [x] Phase 2 — Created JWT Auth middleware (`get_current_user`) in `backend/middleware/auth.py`
+- [x] Phase 2 — Created Auth routes (`/api/auth/register`, `/api/auth/login`) in `backend/routes/auth.py`
+- [x] Phase 2 — Created protected User/Profile routes (`GET/PUT /api/user/profile`, `GET /api/user/me`) in `backend/routes/user.py`
+- [x] Phase 2 — Installed `@supabase/supabase-js` and configured frontend services (`supabaseClient.js`, `api.js`)
+- [x] Phase 2 — Created `AuthContext` and `ProtectedRoute` component for route guarding
+- [x] Phase 2 — Wired `LoginPage.jsx` and `RegisterPage.jsx` to real Supabase/backend auth calls
+- [x] Phase 2 — Wired `ProfilePage.jsx` to fetch and update user profile data via backend API
+- [x] Phase 2 — Verified backend startup & routes, frontend `npm run lint` (0 errors), and `npm run build` (2133 modules, 6.35s)
 
 # Current Task
 
-**Phase 2 Prep — Backend API & Supabase Auth Integration**
+**Phase 3 — Skill Assessment Engine**
 
-Connect authentication (Supabase Auth + JWT) to the existing auth pages. Implement protected route guard in the frontend. Stand up user profile and roadmap API endpoints in FastAPI.
+Design and implement the Skill Assessment engine to evaluate user proficiency, identify skill gaps, and prepare inputs for AI roadmap generation.
 
 # Next Tasks
 
-1. Implement Supabase Auth (sign-up, sign-in, forgot-password) wired to `LoginPage`, `RegisterPage`, `ForgotPasswordPage`
-2. Create `AuthContext` (or Zustand store) to hold session state across the app
-3. Add `ProtectedRoute` component that redirects unauthenticated users to `/login`
-4. Build FastAPI user-profile endpoint (`GET /users/me`, `PATCH /users/me`)
-5. Build FastAPI roadmap endpoint skeleton (`POST /roadmaps/generate`, `GET /roadmaps/:id`)
+1. Build assessment data models and schemas in backend
+2. Implement backend assessment endpoints (`POST /api/assessment`, `GET /api/assessment/result`)
+3. Build frontend assessment questionnaire and results components
+4. Wire frontend assessment pages to backend API
+5. Prepare assessment outputs for Phase 4 (AI Roadmap Generation)
 
 # Decisions Made
 
@@ -84,9 +95,9 @@ Connect authentication (Supabase Auth + JWT) to the existing auth pages. Impleme
 | Router | React Router v7 (`react-router-dom`) | Already listed in tech stack; was pre-installed |
 | Auth pages style | Centered card on gradient background with full dark mode polish | Follows `designs.md` trust/simplicity principle |
 | Dashboard sidebar | Fixed 240px desktop, slide-in drawer mobile | Matches `designs.md` layout spec |
-| Auth guard | Deferred to Phase 2 | Backend auth not yet available; placeholder `// TODO` left |
 | Interactive Hero Card | Aceternity ContainerScroll | Modern scroll animation adapted from TSX to JSX using framer-motion |
 | Theme Management | ThemeContext (`localStorage` + `dark` class on html root) | Clean React context supporting system preference and manual Sun/Moon toggle |
+| Auth context & guard | AuthContext + ProtectedRoute | Full session sync and automatic redirect to /login for protected shell |
 
 # Folder Structure Notes
 
@@ -96,23 +107,24 @@ path-pilot/
 │   └── src/
 │       ├── components/
 │       │   ├── ui/         # Button, Card, Input, Label, Badge, ContainerScroll
-│       │   ├── layout/     # Container, Section, Navbar, Footer, DashboardLayout
+│       │   ├── layout/     # Container, Section, Navbar, Footer, DashboardLayout, ProtectedRoute
 │       │   └── landing/    # HeroSection, HowItWorks, Features, CareerPaths, Testimonials, CTA
-│       ├── context/        # ThemeContext
+│       ├── context/        # ThemeContext, AuthContext
 │       ├── pages/          # HomePage, LoginPage, RegisterPage, ForgotPasswordPage
 │       │                   # DashboardPage, RoadmapPage, ProfilePage
-│       ├── services/       # API clients (api.js, aiService.js)
+│       ├── services/       # API clients (api.js, supabaseClient.js, aiService.js)
 │       ├── hooks/          # Custom React hooks
 │       ├── utils/          # cn() helper
 │       └── assets/         # Static assets (images, fonts)
 ├── backend/
 │   ├── controllers/        # Request handlers
-│   ├── routes/             # API route definitions
+│   ├── routes/             # API route definitions (auth.py, health.py, user.py)
 │   ├── services/           # Business logic + AI integration
-│   ├── models/             # Database models (SQLAlchemy)
-│   ├── middleware/         # Auth, validation, error handling
+│   ├── models/             # Database models (SQLAlchemy: user.py, profile.py)
+│   ├── schemas/            # Pydantic schemas (auth.py, user.py, profile.py)
+│   ├── middleware/         # Auth (auth.py), validation, error handling
 │   ├── utils/              # Helper functions
-│   └── config/             # Environment and app configuration
+│   └── config/             # Environment and app configuration (database.py, settings.py)
 └── docs/                   # All project documentation (source of truth)
 ```
 
@@ -122,8 +134,8 @@ Empty directories contain `.gitkeep` files so Git tracks the structure.
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React, Vite, Tailwind CSS, React Router v7, Framer Motion, Recharts, Lucide React |
-| Backend | FastAPI, Python 3.11+, Pydantic, SQLAlchemy, Uvicorn |
+| Frontend | React, Vite, Tailwind CSS, React Router v7, Framer Motion, Recharts, Lucide React, @supabase/supabase-js |
+| Backend | FastAPI, Python 3.11+, Pydantic, SQLAlchemy, Uvicorn, python-jose, httpx |
 | Database | PostgreSQL (Supabase) |
 | AI | Google Gemini API |
 | Auth | Supabase Auth + JWT |
@@ -143,18 +155,20 @@ See [.env.example](../.env.example). Key variables:
 - `SECRET_KEY` — Backend application secret
 - `JWT_SECRET` — JWT signing secret
 - `VITE_API_URL` — Frontend API base URL
+- `VITE_SUPABASE_URL` — Frontend Supabase URL
+- `VITE_SUPABASE_ANON_KEY` — Frontend Supabase Anon Key
 
 # Database Status
 
-**Not started.** Schema designed in [DATABASE.md](./DATABASE.md). Tables planned: users, roadmaps, assessments, resources, bookmarks, progress, projects, internships.
+**Schema & ORM defined.** SQLAlchemy models `User` (`users`) and `Profile` (`profiles`) created in `backend/models/`. Connection factory setup in `backend/config/database.py`.
 
 # Backend Progress
 
-**Foundation complete and verified.** Python 3.11 and the requirements in `backend/requirements.txt` are installed in `backend/.venv`. `backend/main.py` configures FastAPI and CORS, and `backend/routes/health.py` provides `GET /health`. Live checks returned `{"service":"PathPilot","status":"running"}` from `/` and `{"status":"healthy"}` from `/health`. No models or feature services have been implemented.
+**Phase 2 complete and verified.** `backend/config/database.py`, models (`User`, `Profile`), schemas (`auth`, `user`, `profile`), auth middleware (`get_current_user`), and routes (`/api/auth/register`, `/api/auth/login`, `/api/user/profile`, `/api/user/me`) are fully implemented and integrated in `backend/main.py`. Local imports and route definitions verified.
 
 # Frontend Progress
 
-**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, featuring an Aceternity `ContainerScroll` hero mockup with layout fixes and dark mode support. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation and dark mode. Light/Dark mode switcher is implemented in `Navbar.jsx` and `DashboardLayout.jsx` using `ThemeContext.jsx`. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
+**Phase 2 complete.** `@supabase/supabase-js` installed. Created `services/supabaseClient.js`, `services/api.js` bearer token wrapper, `context/AuthContext.jsx`, and `components/layout/ProtectedRoute.jsx`. Form submit handlers in `LoginPage.jsx` and `RegisterPage.jsx` wired to authentication. `ProfilePage.jsx` updated to fetch and update user profile state with loading and error indicators. `App.jsx` wrapped in `AuthProvider` and dashboard protected. `npm run lint` (0 errors) and `npm run build` (2133 modules, 6.35s) verified.
 
 # AI Features Progress
 
@@ -162,9 +176,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Known Issues
 
-- No Supabase project configured (not required until Phase 2)
-- Auth pages submit handlers are stubs (`// TODO: call auth service`) — auth guard deferred to Phase 2
-- Dashboard profile displays hard-coded placeholder data — real user data comes with backend integration
+- Real Supabase credentials must be supplied in `.env` files for live end-to-end Supabase authentication tests.
 
 # Future Improvements
 
@@ -179,5 +191,5 @@ See [.env.example](../.env.example). Key variables:
 
 **Date:** July 21, 2026  
 **Agent Name:** Antigravity  
-**Current session summary:** Refactored `ThemeContext.jsx` to toggle the `dark` class directly on `document.documentElement`. Overhauled dark mode aesthetics across `Card`, `Input`, `Label`, `DashboardLayout`, Auth Pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`), and Dashboard Views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) with dark slate tones and glassmorphism. Added Theme Toggle button to `DashboardLayout`. Verified `npm run lint` (0 errors) and `npm run build` (2087 modules, 13.44s).  
-**Summary of changes:** Updated `context/ThemeContext.jsx`, `components/ui/Card.jsx`, `components/ui/Input.jsx`, `components/ui/Label.jsx`, `components/layout/DashboardLayout.jsx`, `pages/LoginPage.jsx`, `pages/RegisterPage.jsx`, `pages/ForgotPasswordPage.jsx`, `pages/DashboardPage.jsx`, `pages/RoadmapPage.jsx`, `pages/ProfilePage.jsx`, and `docs/memory.md`.
+**Current session summary:** Completed Phase 2 (Database Schema, Supabase Auth Integration, Backend User/Profile APIs). Implemented database models, Pydantic schemas, auth middleware, FastAPI auth/user routes, frontend Supabase integration, AuthContext, ProtectedRoute, and updated Login, Register, and Profile pages. Verified frontend lint/build and backend route registration.  
+**Summary of changes:** Added `backend/config/database.py`, `backend/models/user.py`, `backend/models/profile.py`, `backend/models/__init__.py`, `backend/schemas/auth.py`, `backend/schemas/user.py`, `backend/schemas/profile.py`, `backend/schemas/__init__.py`, `backend/middleware/auth.py`, `backend/middleware/__init__.py`, `backend/routes/auth.py`, `backend/routes/user.py`, `frontend/src/services/supabaseClient.js`, `frontend/src/services/api.js`, `frontend/src/context/AuthContext.jsx`, `frontend/src/components/layout/ProtectedRoute.jsx`. Updated `backend/requirements.txt`, `backend/config/settings.py`, `backend/main.py`, `frontend/src/pages/LoginPage.jsx`, `frontend/src/pages/RegisterPage.jsx`, `frontend/src/pages/ProfilePage.jsx`, `frontend/src/App.jsx`, `frontend/src/main.jsx`, `frontend/.env`, `backend/.env`, and `docs/memory.md`.
