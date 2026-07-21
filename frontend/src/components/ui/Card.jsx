@@ -4,7 +4,7 @@ function Card({ className, children, ...props }) {
   return (
     <div
       className={cn(
-        'rounded-card border border-border bg-surface p-6 shadow-card transition-shadow hover:shadow-card-hover',
+        'rounded-card border border-border dark:border-slate-800 bg-surface dark:bg-slate-900 p-6 shadow-card transition-all hover:shadow-card-hover',
         className
       )}
       {...props}
@@ -24,7 +24,7 @@ function CardHeader({ className, children, ...props }) {
 
 function CardTitle({ className, children, ...props }) {
   return (
-    <h3 className={cn('text-heading text-slate-900', className)} {...props}>
+    <h3 className={cn('text-heading text-slate-900 dark:text-slate-100', className)} {...props}>
       {children}
     </h3>
   );
@@ -32,7 +32,7 @@ function CardTitle({ className, children, ...props }) {
 
 function CardDescription({ className, children, ...props }) {
   return (
-    <p className={cn('text-caption text-slate-500', className)} {...props}>
+    <p className={cn('text-caption text-slate-500 dark:text-slate-400', className)} {...props}>
       {children}
     </p>
   );
@@ -40,7 +40,7 @@ function CardDescription({ className, children, ...props }) {
 
 function CardContent({ className, children, ...props }) {
   return (
-    <div className={cn('text-body text-slate-600', className)} {...props}>
+    <div className={cn('text-body text-slate-600 dark:text-slate-300', className)} {...props}>
       {children}
     </div>
   );

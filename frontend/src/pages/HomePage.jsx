@@ -9,7 +9,7 @@ import CtaSection from '../components/landing/CtaSection';
 
 function HomePage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-surface dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       <Navbar />
       <main>
         <HeroSection />

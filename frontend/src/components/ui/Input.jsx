@@ -16,17 +16,17 @@ function Input({
           error ? `${id}-error` : hint ? `${id}-hint` : undefined
         }
         className={cn(
-          'h-10 w-full rounded-input border bg-surface px-3 text-body text-slate-800',
-          'placeholder:text-slate-400',
+          'h-10 w-full rounded-input border bg-surface dark:bg-slate-900 px-3 text-body text-slate-800 dark:text-slate-100',
+          'placeholder:text-slate-400 dark:placeholder:text-slate-500',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1',
           'disabled:cursor-not-allowed disabled:opacity-50',
-          error ? 'border-error' : 'border-border',
+          error ? 'border-error' : 'border-border dark:border-slate-800',
           className
         )}
         {...props}
       />
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1.5 text-caption text-slate-500">
+        <p id={`${id}-hint`} className="mt-1.5 text-caption text-slate-500 dark:text-slate-400">
           {hint}
         </p>
       )}

@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 60%**
+**Overall Progress: 62%**
 
-Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page with Aceternity ContainerScroll animation is built, React Router is wired, auth pages are built, and the dashboard shell is in place. Phase 2 prep is next.
+Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page with Aceternity ContainerScroll animation, layout spacing fixes, and dark/light theme switching is built, React Router is wired, auth pages are built, and the dashboard shell is in place. Phase 2 prep is next.
 
 # Completed
 
@@ -45,7 +45,9 @@ Planning and Phase 0 are complete. Phase 1 is complete — the responsive landin
 - [x] Phase 1 — Dashboard shell: `DashboardLayout.jsx` (responsive fixed sidebar, mobile drawer, top header)
 - [x] Phase 1 — Placeholder dashboard views: `DashboardPage.jsx`, `RoadmapPage.jsx`, `ProfilePage.jsx`
 - [x] Phase 1 — Navbar, Footer, HeroSection, CtaSection updated to use React Router `Link`
-- [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2086 modules, built in 10.01s
+- [x] Phase 1 — Light/Dark Theme Switching: `ThemeContext.jsx` created, toggle button (Sun/Moon) added to Navbar, dark mode support in Card/Input/Label/Navbar/Hero
+- [x] Phase 1 — ContainerScroll layout & spacing fixed to prevent title/CTA text overlap; high-quality dashboard mockup asset updated
+- [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2087 modules, built in 14.54s
 
 # Current Task
 
@@ -84,6 +86,7 @@ Connect authentication (Supabase Auth + JWT) to the existing auth pages. Impleme
 | Dashboard sidebar | Fixed 240px desktop, slide-in drawer mobile | Matches `designs.md` layout spec |
 | Auth guard | Deferred to Phase 2 | Backend auth not yet available; placeholder `// TODO` left |
 | Interactive Hero Card | Aceternity ContainerScroll | Modern scroll animation adapted from TSX to JSX using framer-motion |
+| Theme Management | ThemeContext (`localStorage` + `dark` class) | Clean React context supporting system preference and manual Sun/Moon toggle |
 
 # Folder Structure Notes
 
@@ -95,6 +98,7 @@ path-pilot/
 │       │   ├── ui/         # Button, Card, Input, Label, Badge, ContainerScroll
 │       │   ├── layout/     # Container, Section, Navbar, Footer, DashboardLayout
 │       │   └── landing/    # HeroSection, HowItWorks, Features, CareerPaths, Testimonials, CTA
+│       ├── context/        # ThemeContext
 │       ├── pages/          # HomePage, LoginPage, RegisterPage, ForgotPasswordPage
 │       │                   # DashboardPage, RoadmapPage, ProfilePage
 │       ├── services/       # API clients (api.js, aiService.js)
@@ -150,7 +154,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Frontend Progress
 
-**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, including an interactive Aceternity `ContainerScroll` hero mockup. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
+**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, featuring an Aceternity `ContainerScroll` hero mockup with layout fixes and dark mode support. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation and dark mode. Light/Dark mode switcher is implemented in `Navbar.jsx` using `ThemeContext.jsx`. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
 
 # AI Features Progress
 
@@ -175,5 +179,5 @@ See [.env.example](../.env.example). Key variables:
 
 **Date:** July 21, 2026  
 **Agent Name:** Antigravity  
-**Current session summary:** Adapted Aceternity ContainerScroll component to clean React JS (`ContainerScroll.jsx`), integrated it into `HeroSection.jsx` with an Unsplash dashboard preview image, updated `memory.md`, and verified clean `npm run lint` (0 errors) and `npm run build` (2086 modules, 10.01s).  
-**Summary of changes:** Added `components/ui/ContainerScroll.jsx`; updated `components/ui/index.js` and `components/landing/HeroSection.jsx`; updated `docs/memory.md`.
+**Current session summary:** Fixed ContainerScroll layout overlap issue, updated dashboard preview asset URL, created `ThemeContext.jsx` for Light/Dark mode switching with `localStorage` persistence, added Sun/Moon toggle button to `Navbar.jsx`, added dark mode styling across components, updated `memory.md`, and verified `npm run lint` (0 errors) and `npm run build` (2087 modules, 14.54s).  
+**Summary of changes:** Updated `components/ui/ContainerScroll.jsx`, `components/landing/HeroSection.jsx`, `components/layout/Navbar.jsx`, `components/ui/Card.jsx`, `components/ui/Input.jsx`, `components/ui/Label.jsx`, `pages/HomePage.jsx`, `main.jsx`; created `context/ThemeContext.jsx`; updated `docs/memory.md`.
