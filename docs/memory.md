@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 62%**
+**Overall Progress: 65%**
 
-Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page with Aceternity ContainerScroll animation, layout spacing fixes, and dark/light theme switching is built, React Router is wired, auth pages are built, and the dashboard shell is in place. Phase 2 prep is next.
+Planning and Phase 0 are complete. Phase 1 is complete — the responsive landing page, React Router, Auth pages (Login, Register, Forgot Password), Dashboard shell (Dashboard, Roadmap, Profile), and full Light/Dark mode theme toggle are fully integrated and polished. Phase 2 prep is next.
 
 # Completed
 
@@ -42,12 +42,12 @@ Planning and Phase 0 are complete. Phase 1 is complete — the responsive landin
 - [x] Phase 1 — `HomePage` composed in `pages/HomePage.jsx`
 - [x] Phase 1 — React Router (`react-router-dom` v7) wired in `App.jsx` with `BrowserRouter`, `Routes`, `Route`
 - [x] Phase 1 — Auth pages: `LoginPage.jsx`, `RegisterPage.jsx`, `ForgotPasswordPage.jsx`
-- [x] Phase 1 — Dashboard shell: `DashboardLayout.jsx` (responsive fixed sidebar, mobile drawer, top header)
+- [x] Phase 1 — Dashboard shell: `DashboardLayout.jsx` (responsive fixed sidebar, mobile drawer, top header with theme toggle + profile dropdown)
 - [x] Phase 1 — Placeholder dashboard views: `DashboardPage.jsx`, `RoadmapPage.jsx`, `ProfilePage.jsx`
 - [x] Phase 1 — Navbar, Footer, HeroSection, CtaSection updated to use React Router `Link`
-- [x] Phase 1 — Light/Dark Theme Switching: `ThemeContext.jsx` created, toggle button (Sun/Moon) added to Navbar, dark mode support in Card/Input/Label/Navbar/Hero
-- [x] Phase 1 — ContainerScroll layout & spacing fixed to prevent title/CTA text overlap; high-quality dashboard mockup asset updated
-- [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2087 modules, built in 14.54s
+- [x] Phase 1 — Light/Dark Theme Switching refactored: `ThemeContext.jsx` applies `dark` class directly to `document.documentElement`, supports manual toggle & `localStorage` persistence.
+- [x] Phase 1 — Dark mode aesthetics overhauled across all components (`Card`, `Input`, `Label`, `Navbar`, `DashboardLayout`, Auth Pages, and Dashboard Views) with high-contrast slate colors and subtle glassmorphism.
+- [x] Phase 1 — `npm run lint` and `npm run build` verified — 0 errors, 2087 modules, built in 13.44s
 
 # Current Task
 
@@ -82,11 +82,11 @@ Connect authentication (Supabase Auth + JWT) to the existing auth pages. Impleme
 | Landing page structure | Section-based composition in `components/landing/` | Matches `designs.md` flow; keeps `HomePage` thin |
 | Career search (UI only) | Client-side filter on static career path data | No backend yet; avoids fake API calls |
 | Router | React Router v7 (`react-router-dom`) | Already listed in tech stack; was pre-installed |
-| Auth pages style | Centered card on gradient background | Follows `designs.md` trust/simplicity principle |
+| Auth pages style | Centered card on gradient background with full dark mode polish | Follows `designs.md` trust/simplicity principle |
 | Dashboard sidebar | Fixed 240px desktop, slide-in drawer mobile | Matches `designs.md` layout spec |
 | Auth guard | Deferred to Phase 2 | Backend auth not yet available; placeholder `// TODO` left |
 | Interactive Hero Card | Aceternity ContainerScroll | Modern scroll animation adapted from TSX to JSX using framer-motion |
-| Theme Management | ThemeContext (`localStorage` + `dark` class) | Clean React context supporting system preference and manual Sun/Moon toggle |
+| Theme Management | ThemeContext (`localStorage` + `dark` class on html root) | Clean React context supporting system preference and manual Sun/Moon toggle |
 
 # Folder Structure Notes
 
@@ -154,7 +154,7 @@ See [.env.example](../.env.example). Key variables:
 
 # Frontend Progress
 
-**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, featuring an Aceternity `ContainerScroll` hero mockup with layout fixes and dark mode support. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation and dark mode. Light/Dark mode switcher is implemented in `Navbar.jsx` using `ThemeContext.jsx`. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
+**Phase 1 complete.** Design tokens and reusable UI components are in place. The responsive landing page is complete with all six sections, featuring an Aceternity `ContainerScroll` hero mockup with layout fixes and dark mode support. React Router v7 is wired in `App.jsx`. Auth pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`) are built with form validation and dark mode. Light/Dark mode switcher is implemented in `Navbar.jsx` and `DashboardLayout.jsx` using `ThemeContext.jsx`. The dashboard shell (`DashboardLayout`) provides a fixed desktop sidebar, mobile slide-in drawer, and top header with profile/notification controls. Placeholder dashboard views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) are routed under `/dashboard/*`. Navbar, Footer, HeroSection, and CtaSection CTAs use React Router `Link`. `npm run lint` and `npm run build` both pass with 0 errors.
 
 # AI Features Progress
 
@@ -179,5 +179,5 @@ See [.env.example](../.env.example). Key variables:
 
 **Date:** July 21, 2026  
 **Agent Name:** Antigravity  
-**Current session summary:** Fixed ContainerScroll layout overlap issue, updated dashboard preview asset URL, created `ThemeContext.jsx` for Light/Dark mode switching with `localStorage` persistence, added Sun/Moon toggle button to `Navbar.jsx`, added dark mode styling across components, updated `memory.md`, and verified `npm run lint` (0 errors) and `npm run build` (2087 modules, 14.54s).  
-**Summary of changes:** Updated `components/ui/ContainerScroll.jsx`, `components/landing/HeroSection.jsx`, `components/layout/Navbar.jsx`, `components/ui/Card.jsx`, `components/ui/Input.jsx`, `components/ui/Label.jsx`, `pages/HomePage.jsx`, `main.jsx`; created `context/ThemeContext.jsx`; updated `docs/memory.md`.
+**Current session summary:** Refactored `ThemeContext.jsx` to toggle the `dark` class directly on `document.documentElement`. Overhauled dark mode aesthetics across `Card`, `Input`, `Label`, `DashboardLayout`, Auth Pages (`LoginPage`, `RegisterPage`, `ForgotPasswordPage`), and Dashboard Views (`DashboardPage`, `RoadmapPage`, `ProfilePage`) with dark slate tones and glassmorphism. Added Theme Toggle button to `DashboardLayout`. Verified `npm run lint` (0 errors) and `npm run build` (2087 modules, 13.44s).  
+**Summary of changes:** Updated `context/ThemeContext.jsx`, `components/ui/Card.jsx`, `components/ui/Input.jsx`, `components/ui/Label.jsx`, `components/layout/DashboardLayout.jsx`, `pages/LoginPage.jsx`, `pages/RegisterPage.jsx`, `pages/ForgotPasswordPage.jsx`, `pages/DashboardPage.jsx`, `pages/RoadmapPage.jsx`, `pages/ProfilePage.jsx`, and `docs/memory.md`.

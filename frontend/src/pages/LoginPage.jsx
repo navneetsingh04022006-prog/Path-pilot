@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LogIn } from 'lucide-react';
-import { Button, Input, Label } from '../components/ui';
+import { Button, Input, Label, Card } from '../components/ui';
 
 function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -36,19 +36,19 @@ function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-light via-surface to-surface px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-light/40 via-surface to-surface dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 px-4 py-12 transition-colors">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="mb-8 text-center">
-          <Link to="/" className="text-2xl font-semibold text-slate-900">
-            Path <span className="text-primary">Pilot</span>
+          <Link to="/" className="text-2xl font-semibold text-slate-900 dark:text-white">
+            Path <span className="text-primary dark:text-primary-400">Pilot</span>
           </Link>
-          <p className="mt-2 text-body text-slate-500">Sign in to continue your career journey.</p>
+          <p className="mt-2 text-body text-slate-500 dark:text-slate-400">Sign in to continue your career journey.</p>
         </div>
 
         {/* Card */}
-        <div className="rounded-card border border-border bg-surface p-8 shadow-card">
-          <h1 className="mb-6 text-heading text-slate-900">Sign in</h1>
+        <Card className="p-8 shadow-card dark:shadow-[0_0_30px_rgba(79,70,229,0.1)]">
+          <h1 className="mb-6 text-heading text-slate-900 dark:text-slate-100">Sign in</h1>
 
           <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col gap-5">
@@ -77,7 +77,7 @@ function LoginPage() {
                   </Label>
                   <Link
                     to="/forgot-password"
-                    className="text-caption text-primary transition-colors hover:text-primary-hover"
+                    className="text-caption text-primary dark:text-primary-400 transition-colors hover:text-primary-hover dark:hover:text-primary-300"
                   >
                     Forgot password?
                   </Link>
@@ -101,16 +101,16 @@ function LoginPage() {
             </div>
           </form>
 
-          <p className="mt-6 text-center text-caption text-slate-500">
+          <p className="mt-6 text-center text-caption text-slate-500 dark:text-slate-400">
             Don&apos;t have an account?{' '}
             <Link
               to="/register"
-              className="text-primary transition-colors hover:text-primary-hover"
+              className="text-primary dark:text-primary-400 transition-colors hover:text-primary-hover dark:hover:text-primary-300"
             >
               Create one
             </Link>
           </p>
-        </div>
+        </Card>
       </div>
     </div>
   );

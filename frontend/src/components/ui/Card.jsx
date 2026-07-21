@@ -4,7 +4,7 @@ function Card({ className, children, ...props }) {
   return (
     <div
       className={cn(
-        'rounded-card border border-border dark:border-slate-800 bg-surface dark:bg-slate-900 p-6 shadow-card transition-all hover:shadow-card-hover',
+        'rounded-card border border-border dark:border-slate-800/80 bg-surface dark:bg-slate-900/80 backdrop-blur-sm p-6 shadow-card dark:shadow-[0_0_20px_rgba(79,70,229,0.05)] transition-all hover:shadow-card-hover dark:hover:border-slate-700/80',
         className
       )}
       {...props}

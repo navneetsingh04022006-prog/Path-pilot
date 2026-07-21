@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft } from 'lucide-react';
-import { Button, Input, Label } from '../components/ui';
+import { Button, Input, Label, Card } from '../components/ui';
 
 function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -36,31 +36,31 @@ function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-light via-surface to-surface px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-light/40 via-surface to-surface dark:from-slate-950 dark:via-slate-950 dark:to-slate-900 px-4 py-12 transition-colors">
       <div className="w-full max-w-md">
         {/* Brand */}
         <div className="mb-8 text-center">
-          <Link to="/" className="text-2xl font-semibold text-slate-900">
-            Path <span className="text-primary">Pilot</span>
+          <Link to="/" className="text-2xl font-semibold text-slate-900 dark:text-white">
+            Path <span className="text-primary dark:text-primary-400">Pilot</span>
           </Link>
-          <p className="mt-2 text-body text-slate-500">We&apos;ll send a reset link to your inbox.</p>
+          <p className="mt-2 text-body text-slate-500 dark:text-slate-400">We&apos;ll send a reset link to your inbox.</p>
         </div>
 
         {/* Card */}
-        <div className="rounded-card border border-border bg-surface p-8 shadow-card">
+        <Card className="p-8 shadow-card dark:shadow-[0_0_30px_rgba(79,70,229,0.1)]">
           {submitted ? (
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-success-light">
-                <Mail className="h-6 w-6 text-emerald-700" aria-hidden="true" />
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-success-light dark:bg-emerald-950/60">
+                <Mail className="h-6 w-6 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
               </div>
-              <h1 className="text-heading text-slate-900">Check your email</h1>
-              <p className="mt-3 text-body text-slate-500">
-                If an account exists for <span className="text-slate-700">{email}</span>, you will
+              <h1 className="text-heading text-slate-900 dark:text-slate-100">Check your email</h1>
+              <p className="mt-3 text-body text-slate-500 dark:text-slate-400">
+                If an account exists for <span className="text-slate-700 dark:text-slate-200">{email}</span>, you will
                 receive a password reset link shortly.
               </p>
               <Link
                 to="/login"
-                className="mt-6 inline-flex items-center gap-1.5 text-caption text-primary transition-colors hover:text-primary-hover"
+                className="mt-6 inline-flex items-center gap-1.5 text-caption text-primary dark:text-primary-400 transition-colors hover:text-primary-hover dark:hover:text-primary-300"
               >
                 <ArrowLeft className="h-4 w-4" aria-hidden="true" />
                 Back to sign in
@@ -68,8 +68,8 @@ function ForgotPasswordPage() {
             </div>
           ) : (
             <>
-              <h1 className="mb-2 text-heading text-slate-900">Reset your password</h1>
-              <p className="mb-6 text-caption text-slate-500">
+              <h1 className="mb-2 text-heading text-slate-900 dark:text-slate-100">Reset your password</h1>
+              <p className="mb-6 text-caption text-slate-500 dark:text-slate-400">
                 Enter the email you registered with and we&apos;ll send you a reset link.
               </p>
 
@@ -97,18 +97,18 @@ function ForgotPasswordPage() {
                 </div>
               </form>
 
-              <p className="mt-6 text-center text-caption text-slate-500">
+              <p className="mt-6 text-center text-caption text-slate-500 dark:text-slate-400">
                 Remembered it?{' '}
                 <Link
                   to="/login"
-                  className="text-primary transition-colors hover:text-primary-hover"
+                  className="text-primary dark:text-primary-400 transition-colors hover:text-primary-hover dark:hover:text-primary-300"
                 >
                   Sign in
                 </Link>
               </p>
             </>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );
