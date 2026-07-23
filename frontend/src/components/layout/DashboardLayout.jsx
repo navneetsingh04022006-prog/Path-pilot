@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Map,
   User,
+  Brain,
   Menu,
   X,
   LogOut,
@@ -17,6 +18,7 @@ import { useTheme } from '../../context/ThemeContext';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard, end: true },
+  { label: 'Assessment', to: '/dashboard/assessment', icon: Brain, end: false },
   { label: 'Roadmap', to: '/dashboard/roadmap', icon: Map, end: false },
   { label: 'Profile', to: '/dashboard/profile', icon: User, end: false },
 ];

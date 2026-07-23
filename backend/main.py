@@ -5,6 +5,7 @@ from config.settings import settings
 from routes.health import router as health_router
 from routes.auth import router as auth_router
 from routes.user import router as user_router
+from routes.assessment import router as assessment_router
 
 app = FastAPI(
     title="Path Pilot API",
@@ -24,6 +25,7 @@ app.add_middleware(
 app.include_router(health_router)
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(assessment_router)
 
 
 @app.get("/")

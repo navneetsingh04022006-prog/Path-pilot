@@ -13,8 +13,13 @@ class Base(DeclarativeBase):
 def _make_engine():
     if not settings.db_configured:
         return None
+    db_url = settings.database_url
+    if "?pgbouncer=true" in db_url:
+        db_url = db_url.replace("?pgbouncer=true", "")
+    elif "&pgbouncer=true" in db_url:
+        db_url = db_url.replace("&pgbouncer=true", "")
     return create_engine(
-        settings.database_url,
+        db_url,
         pool_pre_ping=True,
         echo=settings.is_development,
     )

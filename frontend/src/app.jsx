@@ -13,6 +13,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import DashboardPage from './pages/DashboardPage';
 import RoadmapPage from './pages/RoadmapPage';
 import ProfilePage from './pages/ProfilePage';
+import AssessmentPage from './pages/AssessmentPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
                 <Route index element={<DashboardPage />} />
                 <Route path="roadmap" element={<RoadmapPage />} />
                 <Route path="profile" element={<ProfilePage />} />
+                <Route path="assessment" element={<AssessmentPage />} />
               </Route>
             </Route>
           </Routes>
