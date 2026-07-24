@@ -1,19 +1,29 @@
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
-/**
- * Core fetch wrapper.
- * Attaches the Supabase session access_token as a Bearer token when present.
- * Throws an Error with a user-readable message on non-2xx responses.
- */
+import { supabase, supabaseConfigured } from './supabaseClient';
+
 async function request(path, options = {}) {
   const headers = {
     'Content-Type': 'application/json',
+    'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
     ...(options.headers ?? {}),
   };
 
-  // Lazily pull the token from sessionStorage to avoid a circular import
-  // with AuthContext. The token is stored there by AuthContext.
-  const token = sessionStorage.getItem('pathpilot-access-token');
+  let token = sessionStorage.getItem('pathpilot-access-token');
+
+  // Try auto-refreshing session if supabase is configured
+  if (supabaseConfigured && supabase) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        token = session.access_token;
+        sessionStorage.setItem('pathpilot-access-token', token);
+      }
+    } catch (e) {
+      console.error('[PathPilot] Failed to auto-refresh session:', e);
+    }
+  }
+
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -24,6 +34,13 @@ async function request(path, options = {}) {
   });
 
   if (!response.ok) {
+    if (response.status === 401) {
+      sessionStorage.removeItem('pathpilot-access-token');
+      // Gracefully redirect to login if we get a 401 Unauthorized
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
+    }
     let message = `Request failed (${response.status})`;
     try {
       const body = await response.json();
@@ -49,6 +66,18 @@ const api = {
   patch: (path, body, options) =>
     request(path, { method: 'PATCH', body: JSON.stringify(body), ...options }),
   delete: (path, options) => request(path, { method: 'DELETE', ...options }),
+
+  roadmap: {
+    /** Generate a new AI roadmap for the current user. */
+    generate: (careerGoal, weeklyHours = 10) =>
+      request('/api/roadmap/generate', {
+        method: 'POST',
+        body: JSON.stringify({ career_goal: careerGoal, weekly_hours: weeklyHours }),
+      }),
+
+    /** Retrieve the user's currently active roadmap. */
+    getCurrent: () => request('/api/roadmap/current', { method: 'GET' }),
+  },
 };
 
 export default api;

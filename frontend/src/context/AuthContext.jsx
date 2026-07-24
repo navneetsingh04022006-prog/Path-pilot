@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../services/supabaseClient';
+import { supabase, supabaseConfigured } from '../services/supabaseClient';
 
 const AuthContext = createContext(null);
 
@@ -18,6 +18,13 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
+    // If Supabase is not configured (missing env vars), skip auth setup entirely.
+    // This prevents a crash and lets the app render for local development.
+    if (!supabaseConfigured || !supabase) {
+      setLoading(false);
+      return;
+    }
+
     // Restore session from Supabase on initial load
     supabase.auth.getSession().then(({ data: { session: sess } }) => {
       setSession(sess);
@@ -37,6 +44,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function signUp({ email, password, fullName, careerInterest }) {
+    if (!supabase) throw new Error('Auth is not configured. Add Supabase credentials to frontend/.env');
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -49,12 +57,14 @@ export function AuthProvider({ children }) {
   }
 
   async function signIn({ email, password }) {
+    if (!supabase) throw new Error('Auth is not configured. Add Supabase credentials to frontend/.env');
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   }
 
   async function signOut() {
+    if (!supabase) return;
     await supabase.auth.signOut();
   }
 

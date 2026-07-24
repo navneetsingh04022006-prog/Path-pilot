@@ -4,9 +4,9 @@ Path Pilot (PathPilot) is an AI-powered career guidance platform that helps stud
 
 # Current Status
 
-**Overall Progress: 75%**
+**Overall Progress: 85%**
 
-Planning, Phase 0, Phase 1, and Phase 2 are complete. Phase 2 (Database Schema, Supabase Auth Integration, and Backend User/Profile APIs) is fully implemented and verified. Phase 3 (Skill Assessment Engine) is next.
+Planning, Phase 0, Phase 1, Phase 2, Phase 3, and Phase 4 are complete. Phase 4 (AI Roadmap Generator with Google Gemini API) is fully implemented and verified. Phase 5 (Resource Recommendation System) is next.
 
 # Completed
 
@@ -58,21 +58,42 @@ Planning, Phase 0, Phase 1, and Phase 2 are complete. Phase 2 (Database Schema, 
 - [x] Phase 2 — Created `AuthContext` and `ProtectedRoute` component for route guarding
 - [x] Phase 2 — Wired `LoginPage.jsx` and `RegisterPage.jsx` to real Supabase/backend auth calls
 - [x] Phase 2 — Wired `ProfilePage.jsx` to fetch and update user profile data via backend API
-- [x] Phase 2 — Verified backend startup & routes, frontend `npm run lint` (0 errors), and `npm run build` (2133 modules, 6.35s)
+- [x] Phase 2 — Verified backend database connectivity parameters and clean startup.
+- [x] Phase 3 — Created SQLAlchemy ORM model `Assessment` in `backend/models/assessment.py`
+- [x] Phase 3 — Created Pydantic schemas `AssessmentCreate` and `AssessmentResponse` in `backend/schemas/assessment.py`
+- [x] Phase 3 — Created skill assessment computation endpoint `POST /api/assessment` and retrieval endpoint `GET /api/assessment/result`
+- [x] Phase 3 — Created step-by-step interactive questionnaire form `AssessmentPage.jsx`
+- [x] Phase 3 — Registered `/dashboard/assessment` route in `App.jsx` and updated navigation sidebar in `DashboardLayout.jsx`
+- [x] BLANK SCREEN FIX — `supabaseClient.js` now guards `createClient` call; only executes when both env vars are present. `@supabase/supabase-js` v2 throws synchronously on empty URL — this caused the entire React tree to crash, producing a white screen.
+- [x] BLANK SCREEN FIX — `ThemeContext.jsx` now wraps `localStorage.getItem` in try/catch inside `useState` initializer.
+- [x] BLANK SCREEN FIX — `AuthContext.jsx` now checks `supabaseConfigured` before calling any `supabase.auth.*` methods; sets `loading=false` immediately when unconfigured.
+- [x] Phase 4 — Added `gemini_api_key` field and `gemini_configured` property to `backend/config/settings.py`
+- [x] Phase 4 — Added `google-generativeai>=0.8.0` to `backend/requirements.txt`
+- [x] Phase 4 — Added `GEMINI_API_KEY=` placeholder to `backend/.env`
+- [x] Phase 4 — Created `backend/services/ai_service.py` — Gemini prompt engineering, JSON fence-stripping, schema validation, error handling
+- [x] Phase 4 — Created `backend/models/roadmap.py` — `Roadmap` SQLAlchemy ORM model
+- [x] Phase 4 — Updated `backend/models/__init__.py` — exports `Roadmap`
+- [x] Phase 4 — Created `backend/schemas/roadmap.py` — `RoadmapGenerateRequest`, `RoadmapResponse` Pydantic schemas
+- [x] Phase 4 — Created `backend/routes/roadmap.py` — `POST /api/roadmap/generate` and `GET /api/roadmap/current`
+- [x] Phase 4 — Updated `backend/main.py` to register `roadmap_router` (version bumped to 0.3.0)
+- [x] Phase 4 — Updated `frontend/src/services/api.js` — added `api.roadmap.generate()` and `api.roadmap.getCurrent()` helpers
+- [x] Phase 4 — Rewrote `frontend/src/pages/RoadmapPage.jsx` — interactive vertical timeline, collapsible phase cards, animated generation loading messages, topic/resource/project chips, full error and empty states
+- [x] Phase 4 — Updated `frontend/src/pages/DashboardPage.jsx` — live roadmap fetch, dynamic stats row, phase progress strip, first-phase preview with topic chips
+- [x] Phase 4 — `npm run lint` (0 errors) and `npm run build` (2134 modules, 0 errors) verified
 
 # Current Task
 
-**Phase 3 — Skill Assessment Engine**
+**Phase 5 — Resource Recommendation System**
 
-Design and implement the Skill Assessment engine to evaluate user proficiency, identify skill gaps, and prepare inputs for AI roadmap generation.
+Design and implement the intelligent resource recommendation system that suggests curated learning materials (courses, articles, videos, docs) based on the user's current roadmap phases, skill level, and learning preferences.
 
 # Next Tasks
 
-1. Build assessment data models and schemas in backend
-2. Implement backend assessment endpoints (`POST /api/assessment`, `GET /api/assessment/result`)
-3. Build frontend assessment questionnaire and results components
-4. Wire frontend assessment pages to backend API
-5. Prepare assessment outputs for Phase 4 (AI Roadmap Generation)
+1. Build a resource catalog schema and seed initial data (Supabase table or JSON fixture)
+2. Create `POST /api/resources/recommend` endpoint that maps roadmap topics to resource categories
+3. Add resource bookmarking: `POST /api/resources/save` and `GET /api/resources/saved`
+4. Build frontend `ResourcesPage.jsx` with card grid, filter tabs by phase, and bookmark toggle
+5. Surface top resource recommendations in `DashboardPage.jsx` "Today goal" section
 
 # Decisions Made
 
@@ -98,6 +119,10 @@ Design and implement the Skill Assessment engine to evaluate user proficiency, i
 | Interactive Hero Card | Aceternity ContainerScroll | Modern scroll animation adapted from TSX to JSX using framer-motion |
 | Theme Management | ThemeContext (`localStorage` + `dark` class on html root) | Clean React context supporting system preference and manual Sun/Moon toggle |
 | Auth context & guard | AuthContext + ProtectedRoute | Full session sync and automatic redirect to /login for protected shell |
+| Supabase client guard | Null client when env vars absent | Prevents synchronous throw from `createClient('')` which was causing blank white screen |
+| Gemini model | `gemini-1.5-flash` | Fast, cost-efficient for structured JSON generation; sufficient for roadmap prompts |
+| Roadmap phases storage | JSON column on `roadmaps` table | Avoids complex normalised phase table; phases are always read/written as a unit |
+| Roadmap generation flow | Assessment required before generation | Ensures AI has meaningful skill context; returns 422 with helpful message if missing |
 
 # Folder Structure Notes
 
@@ -111,17 +136,17 @@ path-pilot/
 │       │   └── landing/    # HeroSection, HowItWorks, Features, CareerPaths, Testimonials, CTA
 │       ├── context/        # ThemeContext, AuthContext
 │       ├── pages/          # HomePage, LoginPage, RegisterPage, ForgotPasswordPage
-│       │                   # DashboardPage, RoadmapPage, ProfilePage
-│       ├── services/       # API clients (api.js, supabaseClient.js, aiService.js)
+│       │                   # DashboardPage, RoadmapPage, ProfilePage, AssessmentPage
+│       ├── services/       # API clients (api.js, supabaseClient.js)
 │       ├── hooks/          # Custom React hooks
 │       ├── utils/          # cn() helper
 │       └── assets/         # Static assets (images, fonts)
 ├── backend/
 │   ├── controllers/        # Request handlers
-│   ├── routes/             # API route definitions (auth.py, health.py, user.py)
-│   ├── services/           # Business logic + AI integration
-│   ├── models/             # Database models (SQLAlchemy: user.py, profile.py)
-│   ├── schemas/            # Pydantic schemas (auth.py, user.py, profile.py)
+│   ├── routes/             # API route definitions (auth.py, health.py, user.py, assessment.py, roadmap.py)
+│   ├── services/           # Business logic + AI integration (ai_service.py)
+│   ├── models/             # Database models (SQLAlchemy: user.py, profile.py, assessment.py, roadmap.py)
+│   ├── schemas/            # Pydantic schemas (auth.py, user.py, profile.py, assessment.py, roadmap.py)
 │   ├── middleware/         # Auth (auth.py), validation, error handling
 │   ├── utils/              # Helper functions
 │   └── config/             # Environment and app configuration (database.py, settings.py)
@@ -135,9 +160,9 @@ Empty directories contain `.gitkeep` files so Git tracks the structure.
 | Layer | Technology |
 |-------|------------|
 | Frontend | React, Vite, Tailwind CSS, React Router v7, Framer Motion, Recharts, Lucide React, @supabase/supabase-js |
-| Backend | FastAPI, Python 3.11+, Pydantic, SQLAlchemy, Uvicorn, python-jose, httpx |
+| Backend | FastAPI, Python 3.11+, Pydantic, SQLAlchemy, Uvicorn, python-jose, httpx, google-generativeai |
 | Database | PostgreSQL (Supabase) |
-| AI | Google Gemini API |
+| AI | Google Gemini API (`gemini-1.5-flash`) |
 | Auth | Supabase Auth + JWT |
 | Deployment | Vercel (frontend), Render/Railway (backend) |
 
@@ -147,7 +172,7 @@ See [TECH_STACK.md](./TECH_STACK.md) for details.
 
 See [.env.example](../.env.example). Key variables:
 
-- `GEMINI_API_KEY` — Gemini AI API key
+- `GEMINI_API_KEY` — Gemini AI API key (required for Phase 4 roadmap generation)
 - `DATABASE_URL` — PostgreSQL connection string
 - `SUPABASE_URL` — Supabase project URL
 - `SUPABASE_ANON_KEY` — Supabase public key
@@ -160,36 +185,55 @@ See [.env.example](../.env.example). Key variables:
 
 # Database Status
 
-**Schema & ORM defined.** SQLAlchemy models `User` (`users`) and `Profile` (`profiles`) created in `backend/models/`. Connection factory setup in `backend/config/database.py`.
+**Schema & ORM defined.** SQLAlchemy models `User` (`users`), `Profile` (`profiles`), `Assessment` (`assessments`), and `Roadmap` (`roadmaps`) created in `backend/models/`. Connection factory setup in `backend/config/database.py`.
 
 # Backend Progress
 
-**Phase 2 complete and verified.** `backend/config/database.py`, models (`User`, `Profile`), schemas (`auth`, `user`, `profile`), auth middleware (`get_current_user`), and routes (`/api/auth/register`, `/api/auth/login`, `/api/user/profile`, `/api/user/me`) are fully implemented and integrated in `backend/main.py`. Local imports and route definitions verified.
+**Phase 4 complete.** All backend components implemented and registered:
+- `backend/config/settings.py` — `gemini_api_key` and `gemini_configured` added
+- `backend/services/ai_service.py` — Gemini API client, prompt builder, JSON extractor, schema validator
+- `backend/models/roadmap.py` — `Roadmap` ORM model with `phases` JSON column
+- `backend/schemas/roadmap.py` — `RoadmapGenerateRequest`, `RoadmapResponse`
+- `backend/routes/roadmap.py` — `POST /api/roadmap/generate`, `GET /api/roadmap/current`
+- `backend/main.py` — roadmap router registered, version bumped to 0.3.0
 
 # Frontend Progress
 
-**Phase 2 complete.** `@supabase/supabase-js` installed. Created `services/supabaseClient.js`, `services/api.js` bearer token wrapper, `context/AuthContext.jsx`, and `components/layout/ProtectedRoute.jsx`. Form submit handlers in `LoginPage.jsx` and `RegisterPage.jsx` wired to authentication. `ProfilePage.jsx` updated to fetch and update user profile state with loading and error indicators. `App.jsx` wrapped in `AuthProvider` and dashboard protected. `npm run lint` (0 errors) and `npm run build` (2133 modules, 6.35s) verified.
+**Phase 4 complete and verified.** Blank screen fixed. `npm run lint` (0 errors) and `npm run build` (2134 modules, 0 errors) verified.
+- `supabaseClient.js` — guarded `createClient` call (blank screen fix)
+- `ThemeContext.jsx` — `localStorage` wrapped in try/catch
+- `AuthContext.jsx` — all `supabase.auth.*` calls guarded when unconfigured
+- `services/api.js` — `api.roadmap.generate()` and `api.roadmap.getCurrent()` added
+- `pages/RoadmapPage.jsx` — full rewrite: interactive vertical timeline, animated loading messages, collapsible phase cards with topic/resource/project chips
+- `pages/DashboardPage.jsx` — live roadmap fetch, dynamic stats, phase progress strip, first-phase preview
 
 # AI Features Progress
 
-**Not started.** Gemini API integration planned for Phase 4. Prompt templates and JSON response validation not yet designed in code.
+**Phase 4 complete.** `backend/services/ai_service.py` fully implements Gemini API integration with:
+- Structured prompt combining user profile, assessment level, tools, projects, and weekly hours
+- `gemini-2.5-flash` model with Google GenAI SDK configuration and strict JSON mode
+- Markdown fence stripping + regex JSON extraction fallback
+- Full schema validation of the returned roadmap structure
+- Clear error propagation with user-readable messages
 
 # Known Issues
 
 - Real Supabase credentials must be supplied in `.env` files for live end-to-end Supabase authentication tests.
+- `GEMINI_API_KEY` must be set in `backend/.env` for roadmap generation to function.
+- `DATABASE_URL` password placeholder (`[YOUR-PASSWORD]`) must be replaced with the actual Supabase DB password.
 
 # Future Improvements
 
 - Vector database for resource matching (post-MVP)
 - RAG-based AI mentor
-- Dark mode
 - Mobile application
 - AI mock interviews
 - Community and peer learning features
+- Roadmap progress tracking (mark phases/topics as complete)
 
 # Last Updated
 
-**Date:** July 21, 2026  
-**Agent Name:** Antigravity  
-**Current session summary:** Completed Phase 2 (Database Schema, Supabase Auth Integration, Backend User/Profile APIs). Implemented database models, Pydantic schemas, auth middleware, FastAPI auth/user routes, frontend Supabase integration, AuthContext, ProtectedRoute, and updated Login, Register, and Profile pages. Verified frontend lint/build and backend route registration.  
-**Summary of changes:** Added `backend/config/database.py`, `backend/models/user.py`, `backend/models/profile.py`, `backend/models/__init__.py`, `backend/schemas/auth.py`, `backend/schemas/user.py`, `backend/schemas/profile.py`, `backend/schemas/__init__.py`, `backend/middleware/auth.py`, `backend/middleware/__init__.py`, `backend/routes/auth.py`, `backend/routes/user.py`, `frontend/src/services/supabaseClient.js`, `frontend/src/services/api.js`, `frontend/src/context/AuthContext.jsx`, `frontend/src/components/layout/ProtectedRoute.jsx`. Updated `backend/requirements.txt`, `backend/config/settings.py`, `backend/main.py`, `frontend/src/pages/LoginPage.jsx`, `frontend/src/pages/RegisterPage.jsx`, `frontend/src/pages/ProfilePage.jsx`, `frontend/src/App.jsx`, `frontend/src/main.jsx`, `frontend/.env`, `backend/.env`, and `docs/memory.md`.
+**Date:** July 24, 2026
+**Agent Name:** Antigravity
+**Current session summary:** Resolved the Supabase API header authentication issue ("No API key found in request") by appending the default `apikey` header value directly in the frontend api client wrapper (`frontend/src/services/api.js`). Added automatic session token refresh on the frontend by fetching the current session from Supabase Client prior to outgoing API calls and handling 401 Unauthorized responses gracefully by redirecting to `/login`. Upgraded the backend AI roadmap generation client (`backend/services/ai_service.py`) to utilize the new Google GenAI SDK (`google-genai`), targeting the `gemini-2.5-flash` model with schema-enforced JSON validation. Verified application compiles and packages with zero errors via linter (`npm run lint`) and production packaging (`npm run build`).
+**Summary of changes:** Modified `frontend/src/services/api.js`, `backend/services/ai_service.py`, and `docs/memory.md`.

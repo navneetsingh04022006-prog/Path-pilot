@@ -4,9 +4,17 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('pathpilot-theme');
-    if (saved) return saved;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    try {
+      const saved = localStorage.getItem('pathpilot-theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch {
+      // localStorage may be unavailable in restricted environments
+    }
+    try {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
   });
 
   useEffect(() => {

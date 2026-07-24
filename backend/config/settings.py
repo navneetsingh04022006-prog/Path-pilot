@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     jwt_secret: str = "changeme"
     jwt_algorithm: str = "HS256"
 
+    # AI
+    gemini_api_key: str = ""
+
     @property
     def is_development(self) -> bool:
         return self.environment == "development"
@@ -42,6 +45,10 @@ class Settings(BaseSettings):
     @property
     def supabase_configured(self) -> bool:
         return bool(self.supabase_url and self.supabase_service_role_key)
+
+    @property
+    def gemini_configured(self) -> bool:
+        return bool(self.gemini_api_key)
 
 
 settings = Settings()
